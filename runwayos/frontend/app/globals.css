@@ -20,6 +20,7 @@ body {
   margin: 0;
   min-height: 100vh;
   color: var(--ink);
+  line-height: 1.35;
   background:
     radial-gradient(900px 500px at 10% 0%, var(--bg-1), transparent 60%),
     radial-gradient(700px 500px at 90% 0%, var(--bg-2), transparent 55%),
@@ -31,6 +32,7 @@ body {
   border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: 1rem;
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+  backdrop-filter: blur(3px);
 }
 
 .input {
@@ -53,6 +55,12 @@ body {
   font-weight: 600;
   border: 1px solid transparent;
   cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.14);
 }
 
 .btn:disabled {

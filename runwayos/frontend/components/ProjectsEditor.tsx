@@ -55,9 +55,7 @@ export default function ProjectsEditor({
       </div>
       <div className="mt-4 space-y-4">
         {projects.length === 0 ? (
-          <p className="text-sm text-slate-600">
-            No projects yet. Add one to model execution risk and project burn.
-          </p>
+          <p className="text-sm text-slate-600">No projects added.</p>
         ) : null}
         {projects.map((project, idx) => (
           <div
@@ -74,7 +72,7 @@ export default function ProjectsEditor({
                 Remove
               </button>
             </div>
-            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+            <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
               <label className="text-sm">
                 Name
                 <input

@@ -71,12 +71,7 @@ export default function ScenarioEditor({
   return (
     <section className="card p-5">
       <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-lg font-bold">Scenarios</h2>
-          <p className="text-xs text-slate-600">
-            Baseline is always included. Add 2-4 comparison scenarios.
-          </p>
-        </div>
+        <h2 className="text-lg font-bold">Scenarios</h2>
         <button
           className="btn btn-ghost"
           type="button"
@@ -105,7 +100,7 @@ export default function ScenarioEditor({
                 Remove
               </button>
             </div>
-            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+            <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
               <label className="text-sm">
                 Name
                 <input

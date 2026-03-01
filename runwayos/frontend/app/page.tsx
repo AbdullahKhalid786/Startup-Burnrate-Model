@@ -228,16 +228,10 @@ export default function Page() {
   };
 
   return (
-    <main className="mx-auto max-w-[1500px] px-4 py-8 md:px-6">
-      <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+    <main className="mx-auto max-w-[1550px] px-4 py-6 md:px-6">
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <div className="mono text-xs uppercase tracking-widest text-slate-500">
-            RunwayOS Phase 1
-          </div>
-          <h1 className="text-3xl font-bold text-slate-900">Runway Risk Dashboard</h1>
-          <p className="mt-1 text-sm text-slate-600">
-            Monte Carlo runway simulation, ruin curve, raise-by policy, and scenario comparison.
-          </p>
+          <h1 className="text-3xl font-bold text-slate-900">Runway Dashboard</h1>
         </div>
         <div className="flex gap-2">
           <button type="button" className="btn btn-ghost" onClick={loadSafeDemo}>
@@ -249,8 +243,8 @@ export default function Page() {
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[0.95fr_1.25fr]">
-        <section className="space-y-5">
+      <div className="grid gap-6 lg:grid-cols-[0.92fr_1.28fr]">
+        <section className="space-y-4 lg:sticky lg:top-4 lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto lg:pr-1">
           <StartupForm startup={startup} onChange={setStartup} />
           <ProjectsEditor
             projects={projects}
@@ -259,8 +253,8 @@ export default function Page() {
           />
 
           <section className="card p-5">
-            <h2 className="text-lg font-bold">Simulation Config</h2>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <h2 className="text-lg font-bold">Simulation</h2>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
               <label className="text-sm">
                 Horizon Months (1-60)
                 <input
@@ -318,7 +312,7 @@ export default function Page() {
           />
 
           <section className="card p-5">
-            <div className="flex flex-wrap gap-3">
+            <div className="grid gap-2 sm:grid-cols-2">
               <button
                 type="button"
                 className="btn btn-primary"
@@ -342,6 +336,7 @@ export default function Page() {
         <ResultsPanel
           simulation={simulationResult}
           comparison={compareResult}
+          currency={startup.currency}
           loadingSimulation={loadingSimulation}
           loadingCompare={loadingCompare}
           errorMessage={errorMessage}

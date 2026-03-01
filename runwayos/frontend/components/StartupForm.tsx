@@ -17,8 +17,8 @@ export default function StartupForm({ startup, onChange }: StartupFormProps) {
 
   return (
     <section className="card p-5">
-      <h2 className="text-lg font-bold">Startup Snapshot</h2>
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+      <h2 className="text-lg font-bold">Startup</h2>
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         <label className="text-sm">
           Currency
           <input

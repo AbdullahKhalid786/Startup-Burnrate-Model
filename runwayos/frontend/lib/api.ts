@@ -215,16 +215,16 @@ export function makeSafeDemoPayload(): SimulateRequest {
       }
     ],
     config: {
-      horizon_months: 24,
+      horizon_months: 12,
       n_sims: 20000,
       seed: 42,
       include_projects: true
     },
     policy: {
-      lead_time_months_min: 3,
+      lead_time_months_min: 1,
       lead_time_months_max: 6,
-      target_ruin_prob_alpha: 0.05,
-      post_close_buffer_months: 6.0,
+      target_ruin_prob_alpha: 0.2,
+      post_close_buffer_months: 3.0,
       raise_amount_quantile: null,
       enforce_nonnegative_post_close: true,
       raise_amount_cap: null,
@@ -237,12 +237,12 @@ export function makeRiskyDemoPayload(): SimulateRequest {
   return {
     startup: {
       currency: "GBP",
-      cash: 120000.0,
-      monthly_expenses: 55000.0,
-      monthly_revenue: 5000.0,
-      expense_growth_rate_monthly: 0.01,
+      cash: 180000.0,
+      monthly_expenses: 52000.0,
+      monthly_revenue: 32000.0,
+      expense_growth_rate_monthly: 0.015,
       revenue_growth_rate_monthly: 0.01,
-      fragility_q: 0.6
+      fragility_q: 0.4
     },
     projects: [
       {
@@ -250,21 +250,21 @@ export function makeRiskyDemoPayload(): SimulateRequest {
         name: "Platform Rebuild",
         start_month: 1,
         duration_months: 6,
-        monthly_cost: 18000.0,
-        exec_rho: 0.8
+        monthly_cost: 11000.0,
+        exec_rho: 0.6
       }
     ],
     config: {
-      horizon_months: 24,
+      horizon_months: 12,
       n_sims: 20000,
       seed: 42,
       include_projects: true
     },
     policy: {
-      lead_time_months_min: 3,
-      lead_time_months_max: 6,
-      target_ruin_prob_alpha: 0.05,
-      post_close_buffer_months: 6.0,
+      lead_time_months_min: 1,
+      lead_time_months_max: 4,
+      target_ruin_prob_alpha: 0.2,
+      post_close_buffer_months: 3.0,
       raise_amount_quantile: null,
       enforce_nonnegative_post_close: true,
       raise_amount_cap: null,

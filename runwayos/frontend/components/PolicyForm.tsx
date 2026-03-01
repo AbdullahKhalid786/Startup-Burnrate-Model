@@ -18,7 +18,7 @@ export default function PolicyForm({ policy, onChange }: PolicyFormProps) {
   return (
     <section className="card p-5">
       <h2 className="text-lg font-bold">Fundraising Policy</h2>
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         <label className="text-sm">
           Lead Time Min (months)
           <input

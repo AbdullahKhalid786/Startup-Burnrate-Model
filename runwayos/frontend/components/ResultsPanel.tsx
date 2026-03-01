@@ -13,18 +13,28 @@ import ScenarioCompareTable from "./ScenarioCompareTable";
 interface ResultsPanelProps {
   simulation: SimulateResponse | null;
   comparison: CompareScenariosResponse | null;
+  currency: string;
   loadingSimulation: boolean;
   loadingCompare: boolean;
   errorMessage: string | null;
 }
 
-function formatMoney(value: number) {
-  return value.toLocaleString(undefined, { maximumFractionDigits: 0 });
+function formatMoney(value: number, currency: string) {
+  try {
+    return new Intl.NumberFormat(undefined, {
+      style: "currency",
+      currency,
+      maximumFractionDigits: 0,
+    }).format(value);
+  } catch {
+    return value.toLocaleString(undefined, { maximumFractionDigits: 0 });
+  }
 }
 
 export default function ResultsPanel({
   simulation,
   comparison,
+  currency,
   loadingSimulation,
   loadingCompare,
   errorMessage
@@ -72,7 +82,7 @@ export default function ResultsPanel({
               Cash P50 End
             </div>
             <div className="mt-2 text-2xl font-bold text-teal-700">
-              {formatMoney(metrics.cash_p50_end)}
+              {formatMoney(metrics.cash_p50_end, currency)}
             </div>
           </div>
           <div className="card p-4">
@@ -110,7 +120,7 @@ export default function ResultsPanel({
                 <div className="mt-1 text-lg font-bold text-emerald-700">
                   {recommendedRaiseAmount === null
                     ? "N/A"
-                    : formatMoney(recommendedRaiseAmount)}
+                    : formatMoney(recommendedRaiseAmount, currency)}
                 </div>
               </div>
               <div>
@@ -139,19 +149,19 @@ export default function ResultsPanel({
                 <div className="rounded-lg border border-slate-200 bg-white p-3">
                   <div className="text-xs uppercase tracking-wide text-slate-500">Amount p50</div>
                   <div className="mt-1 text-base font-semibold">
-                    {formatMoney(amountPercentiles.p50)}
+                    {formatMoney(amountPercentiles.p50, currency)}
                   </div>
                 </div>
                 <div className="rounded-lg border border-slate-200 bg-white p-3">
                   <div className="text-xs uppercase tracking-wide text-slate-500">Amount p95</div>
                   <div className="mt-1 text-base font-semibold">
-                    {formatMoney(amountPercentiles.p95)}
+                    {formatMoney(amountPercentiles.p95, currency)}
                   </div>
                 </div>
                 <div className="rounded-lg border border-slate-200 bg-white p-3">
                   <div className="text-xs uppercase tracking-wide text-slate-500">Amount p99</div>
                   <div className="mt-1 text-base font-semibold">
-                    {formatMoney(amountPercentiles.p99)}
+                    {formatMoney(amountPercentiles.p99, currency)}
                   </div>
                 </div>
               </div>
@@ -162,25 +172,11 @@ export default function ResultsPanel({
           <RaiseAmountTradeoffChart
             diagnostics={simulation.raise_recommendation.diagnostics}
           />
-          <details className="card p-4">
-            <summary className="cursor-pointer font-semibold">Raw Simulation JSON</summary>
-            <pre className="mt-3 max-h-96 overflow-auto rounded-lg bg-slate-900 p-3 text-xs text-slate-100">
-              {JSON.stringify(simulation, null, 2)}
-            </pre>
-          </details>
         </>
       ) : null}
 
       {comparison ? (
-        <>
-          <ScenarioCompareTable data={comparison} />
-          <details className="card p-4">
-            <summary className="cursor-pointer font-semibold">Raw Compare JSON</summary>
-            <pre className="mt-3 max-h-96 overflow-auto rounded-lg bg-slate-900 p-3 text-xs text-slate-100">
-              {JSON.stringify(comparison, null, 2)}
-            </pre>
-          </details>
-        </>
+        <ScenarioCompareTable data={comparison} currency={currency} />
       ) : null}
     </section>
   );
