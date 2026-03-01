@@ -5,10 +5,12 @@ from fastapi import FastAPI
 
 from runwayos.schemas import (
     CashPercentiles,
+    CloseMonthSummary,
     CompareScenariosRequest,
     CompareScenariosResponse,
     FundraisingPolicy,
     Project,
+    RaiseAmountPercentiles,
     RaiseRecommendation,
     RuinProbabilitySeries,
     ScenarioOutcome,
@@ -55,6 +57,18 @@ def _run_one_simulation(
         summary=sim_run.summary,
         raise_recommendation=RaiseRecommendation(
             raise_by_month=policy_result.raise_by_month,
+            recommended_raise_amount=policy_result.recommended_raise_amount,
+            recommended_raise_amount_quantile=policy_result.recommended_raise_amount_quantile,
+            amount_percentiles=(
+                RaiseAmountPercentiles(**policy_result.amount_percentiles)
+                if policy_result.amount_percentiles is not None
+                else None
+            ),
+            close_month_summary=(
+                CloseMonthSummary(**policy_result.close_month_summary)
+                if policy_result.close_month_summary is not None
+                else None
+            ),
             policy=policy,
             diagnostics=policy_result.diagnostics,
         ),
@@ -91,6 +105,7 @@ def compare_scenarios(request: CompareScenariosRequest) -> CompareScenariosRespo
         name="Baseline",
         summary=baseline_response.summary,
         raise_by_month=baseline_response.raise_recommendation.raise_by_month,
+        recommended_raise_amount=baseline_response.raise_recommendation.recommended_raise_amount,
     )
 
     scenario_results: list[ScenarioOutcome] = []
@@ -110,6 +125,7 @@ def compare_scenarios(request: CompareScenariosRequest) -> CompareScenariosRespo
                 name=scenario.name,
                 summary=scenario_response.summary,
                 raise_by_month=scenario_response.raise_recommendation.raise_by_month,
+                recommended_raise_amount=scenario_response.raise_recommendation.recommended_raise_amount,
             )
         )
 

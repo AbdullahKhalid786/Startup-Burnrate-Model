@@ -28,9 +28,10 @@ export default function ScenarioCompareTable({ data }: ScenarioCompareTableProps
             <tr className="border-b border-slate-200 text-left">
               <th className="py-2 pr-4">Rank</th>
               <th className="py-2 pr-4">Scenario</th>
+              <th className="py-2 pr-4">Raise By</th>
+              <th className="py-2 pr-4">Raise Amount</th>
               <th className="py-2 pr-4">Ruin @ Horizon</th>
               <th className="py-2 pr-4">Cash P50 End</th>
-              <th className="py-2 pr-4">Raise By</th>
             </tr>
           </thead>
           <tbody>
@@ -38,22 +39,32 @@ export default function ScenarioCompareTable({ data }: ScenarioCompareTableProps
               <td className="py-2 pr-4 font-medium">-</td>
               <td className="py-2 pr-4 font-medium">Baseline</td>
               <td className="py-2 pr-4">
+                {data.baseline.raise_by_month ?? "No safe month"}
+              </td>
+              <td className="py-2 pr-4">
+                {data.baseline.recommended_raise_amount === null
+                  ? "N/A"
+                  : formatMoney(data.baseline.recommended_raise_amount)}
+              </td>
+              <td className="py-2 pr-4">
                 {(data.baseline.summary.ruin_prob_horizon * 100).toFixed(2)}%
               </td>
               <td className="py-2 pr-4">{formatMoney(data.baseline.summary.cash_p50_end)}</td>
-              <td className="py-2 pr-4">
-                {data.baseline.raise_by_month ?? "No safe month"}
-              </td>
             </tr>
             {rows.map((row) => (
               <tr key={row.scenario_id} className="border-b border-slate-100">
                 <td className="py-2 pr-4">{row.rank ?? "-"}</td>
                 <td className="py-2 pr-4">{row.name}</td>
+                <td className="py-2 pr-4">{row.raise_by_month ?? "No safe month"}</td>
+                <td className="py-2 pr-4">
+                  {row.recommended_raise_amount === null
+                    ? "N/A"
+                    : formatMoney(row.recommended_raise_amount)}
+                </td>
                 <td className="py-2 pr-4">
                   {(row.summary.ruin_prob_horizon * 100).toFixed(2)}%
                 </td>
                 <td className="py-2 pr-4">{formatMoney(row.summary.cash_p50_end)}</td>
-                <td className="py-2 pr-4">{row.raise_by_month ?? "No safe month"}</td>
               </tr>
             ))}
           </tbody>

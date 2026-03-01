@@ -36,11 +36,25 @@ class FundraisingPolicy(BaseModel):
     lead_time_months_max: int = Field(default=6, ge=0)
     target_ruin_prob_alpha: float = Field(default=0.05, gt=0, lt=1)
     post_close_buffer_months: float = Field(default=6.0, ge=0)
+    raise_amount_quantile: float | None = Field(default=None)
+    enforce_nonnegative_post_close: bool = True
+    raise_amount_cap: float | None = Field(default=None, ge=0)
+    raise_amount_floor: float | None = Field(default=0.0, ge=0)
 
     @model_validator(mode="after")
     def validate_lead_time_window(self) -> FundraisingPolicy:
         if self.lead_time_months_max < self.lead_time_months_min:
             raise ValueError("lead_time_months_max must be >= lead_time_months_min")
+        if self.raise_amount_quantile is not None and not (
+            0 < self.raise_amount_quantile < 1
+        ):
+            raise ValueError("raise_amount_quantile must be in (0,1) when provided")
+        if (
+            self.raise_amount_cap is not None
+            and self.raise_amount_floor is not None
+            and self.raise_amount_floor > self.raise_amount_cap
+        ):
+            raise ValueError("raise_amount_floor must be <= raise_amount_cap")
         return self
 
 
@@ -121,13 +135,30 @@ class RaisePolicyDiagnostics(BaseModel):
     months: list[int]
     p_die_before_close_by_s: list[float]
     p_buffer_fail_by_s: list[float]
+    raise_amount_p95_by_s: list[float | None]
+    raise_amount_star_by_s: list[float | None]
     min_p_die_before_close: float
     min_p_buffer_fail: float
     extra: dict[str, Any] = Field(default_factory=dict)
 
 
+class RaiseAmountPercentiles(BaseModel):
+    p50: float
+    p95: float
+    p99: float
+
+
+class CloseMonthSummary(BaseModel):
+    p50: int
+    p95: int
+
+
 class RaiseRecommendation(BaseModel):
     raise_by_month: int | None
+    recommended_raise_amount: float | None
+    recommended_raise_amount_quantile: float
+    amount_percentiles: RaiseAmountPercentiles | None
+    close_month_summary: CloseMonthSummary | None
     policy: FundraisingPolicy
     diagnostics: RaisePolicyDiagnostics
 
@@ -151,10 +182,10 @@ class ScenarioOutcome(BaseModel):
     name: str
     summary: SimulationSummary
     raise_by_month: int | None
+    recommended_raise_amount: float | None
     rank: int | None = None
 
 
 class CompareScenariosResponse(BaseModel):
     baseline: ScenarioOutcome
     results: list[ScenarioOutcome]
-

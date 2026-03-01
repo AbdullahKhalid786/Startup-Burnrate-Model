@@ -66,6 +66,52 @@ export default function PolicyForm({ policy, onChange }: PolicyFormProps) {
             }
           />
         </label>
+        <label className="text-sm">
+          Raise Amount Quantile (optional)
+          <input
+            className="input mt-1"
+            type="number"
+            step="0.01"
+            min={0.01}
+            max={0.99}
+            placeholder="Default = 1 - alpha"
+            value={policy.raise_amount_quantile ?? ""}
+            onChange={(e) =>
+              update(
+                "raise_amount_quantile",
+                e.target.value === "" ? null : Number(e.target.value)
+              )
+            }
+          />
+        </label>
+        <label className="text-sm">
+          Max Raise Amount Cap (optional)
+          <input
+            className="input mt-1"
+            type="number"
+            min={0}
+            placeholder="No cap"
+            value={policy.raise_amount_cap ?? ""}
+            onChange={(e) =>
+              update(
+                "raise_amount_cap",
+                e.target.value === "" ? null : Number(e.target.value)
+              )
+            }
+          />
+        </label>
+      </div>
+      <div className="mt-4">
+        <label className="flex items-center gap-2 text-sm font-medium">
+          <input
+            type="checkbox"
+            checked={policy.enforce_nonnegative_post_close}
+            onChange={(e) =>
+              update("enforce_nonnegative_post_close", e.target.checked)
+            }
+          />
+          Enforce nonnegative post-close through horizon
+        </label>
       </div>
     </section>
   );

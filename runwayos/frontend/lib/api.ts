@@ -29,6 +29,10 @@ export interface FundraisingPolicy {
   lead_time_months_max: number;
   target_ruin_prob_alpha: number;
   post_close_buffer_months: number;
+  raise_amount_quantile: number | null;
+  enforce_nonnegative_post_close: boolean;
+  raise_amount_cap: number | null;
+  raise_amount_floor: number | null;
 }
 
 export interface Scenario {
@@ -75,9 +79,22 @@ export interface RaisePolicyDiagnostics {
   months: number[];
   p_die_before_close_by_s: number[];
   p_buffer_fail_by_s: number[];
+  raise_amount_p95_by_s: Array<number | null>;
+  raise_amount_star_by_s: Array<number | null>;
   min_p_die_before_close: number;
   min_p_buffer_fail: number;
   extra: Record<string, unknown>;
+}
+
+export interface RaiseAmountPercentiles {
+  p50: number;
+  p95: number;
+  p99: number;
+}
+
+export interface CloseMonthSummary {
+  p50: number;
+  p95: number;
 }
 
 export interface SimulateResponse {
@@ -91,6 +108,10 @@ export interface SimulateResponse {
   summary: SimulationSummary;
   raise_recommendation: {
     raise_by_month: number | null;
+    recommended_raise_amount: number | null;
+    recommended_raise_amount_quantile: number;
+    amount_percentiles: RaiseAmountPercentiles | null;
+    close_month_summary: CloseMonthSummary | null;
     policy: FundraisingPolicy;
     diagnostics: RaisePolicyDiagnostics;
   };
@@ -101,6 +122,7 @@ export interface ScenarioOutcome {
   name: string;
   summary: SimulationSummary;
   raise_by_month: number | null;
+  recommended_raise_amount: number | null;
   rank: number | null;
 }
 
@@ -202,7 +224,11 @@ export function makeSafeDemoPayload(): SimulateRequest {
       lead_time_months_min: 3,
       lead_time_months_max: 6,
       target_ruin_prob_alpha: 0.05,
-      post_close_buffer_months: 6.0
+      post_close_buffer_months: 6.0,
+      raise_amount_quantile: null,
+      enforce_nonnegative_post_close: true,
+      raise_amount_cap: null,
+      raise_amount_floor: 0
     }
   };
 }
@@ -238,7 +264,11 @@ export function makeRiskyDemoPayload(): SimulateRequest {
       lead_time_months_min: 3,
       lead_time_months_max: 6,
       target_ruin_prob_alpha: 0.05,
-      post_close_buffer_months: 6.0
+      post_close_buffer_months: 6.0,
+      raise_amount_quantile: null,
+      enforce_nonnegative_post_close: true,
+      raise_amount_cap: null,
+      raise_amount_floor: 0
     }
   };
 }

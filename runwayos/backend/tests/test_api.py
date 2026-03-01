@@ -53,4 +53,4 @@ def test_api_smoke() -> None:
     assert "ruin_probability_by_month" in data
     assert "summary" in data
     assert "raise_recommendation" in data
-
+    assert "recommended_raise_amount" in data["raise_recommendation"]

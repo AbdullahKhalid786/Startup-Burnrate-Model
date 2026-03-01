@@ -43,6 +43,10 @@ def safe_payload() -> dict:
             "lead_time_months_max": 6,
             "target_ruin_prob_alpha": 0.05,
             "post_close_buffer_months": 6.0,
+            "raise_amount_quantile": None,
+            "enforce_nonnegative_post_close": True,
+            "raise_amount_cap": None,
+            "raise_amount_floor": 0.0,
         },
     }
 
@@ -79,6 +83,10 @@ def risky_payload() -> dict:
             "lead_time_months_max": 6,
             "target_ruin_prob_alpha": 0.05,
             "post_close_buffer_months": 6.0,
+            "raise_amount_quantile": None,
+            "enforce_nonnegative_post_close": True,
+            "raise_amount_cap": None,
+            "raise_amount_floor": 0.0,
         },
     }
 
@@ -89,4 +97,3 @@ if __name__ == "__main__":
     print()
     print("### RISKY_PAYLOAD")
     print(json.dumps(risky_payload(), indent=2))
-

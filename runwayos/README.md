@@ -6,9 +6,15 @@ RunwayOS is a risk-aware runway simulator for startups. This repo includes:
 - Cash fan chart percentiles (`p5`, `p50`, `p95`)
 - Ruin probability curve `P(cash < 0 by month t)`
 - Raise-by month recommendation under fundraising policy constraints
+- Recommended raise amount at chosen raise-by month (quantile-based capital need)
 - Scenario transforms and scenario comparison API
 
 No ML models are used in this phase. Optional priors (`fragility_q`, `exec_rho`) are accepted and used in heuristic uncertainty sampling.
+
+Policy semantics: `raise_by_month` is the latest safe fundraising start month
+within the horizon (a deadline), not the earliest month.
+`recommended_raise_amount` is the estimated capital required at close for the
+selected policy quantile (default `1 - alpha`).
 
 ## Prerequisites
 
@@ -93,9 +99,9 @@ Then open `http://localhost:3000`.
 Demo flow:
 
 1. Click `Load Safe Demo`, then `Run Simulation`.
-2. Review key metrics, fan chart, and ruin curve.
+2. Review key metrics, Raise Plan card (raise-by + recommended raise amount), fan chart, and ruin curve.
 3. Click `Load Risky Demo`, then `Run Simulation` to compare behavior.
-4. Configure/edit scenarios, then click `Compare Scenarios` to render ranked table.
+4. Configure/edit scenarios, then click `Compare Scenarios` to render ranked table with raise amounts.
 
 ## Demo Payloads
 

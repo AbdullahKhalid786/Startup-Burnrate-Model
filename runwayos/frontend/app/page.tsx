@@ -72,6 +72,25 @@ function simulationValidation(
   if (policy.post_close_buffer_months < 0) {
     errors.push("post_close_buffer_months must be >= 0.");
   }
+  if (
+    policy.raise_amount_quantile !== null &&
+    (policy.raise_amount_quantile <= 0 || policy.raise_amount_quantile >= 1)
+  ) {
+    errors.push("raise_amount_quantile must be in (0,1) when provided.");
+  }
+  if (policy.raise_amount_cap !== null && policy.raise_amount_cap < 0) {
+    errors.push("raise_amount_cap must be >= 0.");
+  }
+  if (policy.raise_amount_floor !== null && policy.raise_amount_floor < 0) {
+    errors.push("raise_amount_floor must be >= 0.");
+  }
+  if (
+    policy.raise_amount_cap !== null &&
+    policy.raise_amount_floor !== null &&
+    policy.raise_amount_floor > policy.raise_amount_cap
+  ) {
+    errors.push("raise_amount_floor must be <= raise_amount_cap.");
+  }
 
   const ids = new Set<string>();
   projects.forEach((p, idx) => {
